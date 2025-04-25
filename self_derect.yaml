@@ -11,3 +11,4 @@ payload:
   - IP-CIDR,192.168.0.0/16
   - DOMAIN-KEYWORD,aliyuncs.com
   - DOMAIN-KEYWORD,hubp.8bq.ovh
+  - DOMAIN-KEYWORD,mediafire.com
