@@ -11,4 +11,4 @@ payload:
   - IP-CIDR,192.168.0.0/16
   - DOMAIN-KEYWORD,aliyuncs.com
   - DOMAIN-KEYWORD,hub2.nat.tf
-  
+  - DOMAIN-KEYWORD,ieee.org
