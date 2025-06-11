@@ -12,3 +12,4 @@ payload:
   - IP-CIDRR,10.253.0.0/16
   - DOMAIN-KEYWORD,aliyuncs.com
   - DOMAIN-KEYWORD,hubp.8bq.ovh
+  - IP-CIDR,47.79.0.0/16
