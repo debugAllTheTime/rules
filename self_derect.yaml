@@ -14,3 +14,4 @@ payload:
   - DOMAIN-KEYWORD,hubp.8bq.ovh
   - DOMAIN-KEYWORD,cnki.net
   - IP-CIDR,47.79.0.0/16
+  - DOMAIN-KEYWORD,asusrouter.com
