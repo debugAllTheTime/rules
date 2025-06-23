@@ -16,3 +16,5 @@ payload:
   - IP-CIDR,47.79.35.25/32
   - DOMAIN-KEYWORD,asusrouter.com
   - DOMAIN-KEYWORD,uicdqg.xyz
+  - DOMAIN-SUFFIX,qlogo.cn,DIRECT
+  - DOMAIN-SUFFIX,qpic.cn,DIRECT
