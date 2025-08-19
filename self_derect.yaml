@@ -22,3 +22,4 @@ payload:
   - DOMAIN-SUFFIX,wechat.com
   - DOMAIN-SUFFIX,servicewechat.com
   - IP-CIDR,8.219.115.0/16
+  - DOMAIN-SUFFIX,st.stga.cn
