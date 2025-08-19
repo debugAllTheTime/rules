@@ -21,3 +21,4 @@ payload:
   - DOMAIN-SUFFIX,qq.com
   - DOMAIN-SUFFIX,wechat.com
   - DOMAIN-SUFFIX,servicewechat.com
+  - IP-CIDR,8.219.115.0/16
