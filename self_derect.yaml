@@ -24,3 +24,4 @@ payload:
   - IP-CIDR,8.219.115.0/16
   - DOMAIN-SUFFIX,st.stga.cn
   - DOMAIN-SUFFIX,cncbinternational.com
+  - DOMAIN-KEYWORD,linux.do 
