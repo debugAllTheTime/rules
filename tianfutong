@@ -1,2 +1,0 @@
-[Rule]
-^https?:\/\/ams-cdn\.cdtft\.cn\/prod\/tft-ams\/ url reject-dict
