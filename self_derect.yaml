@@ -24,3 +24,4 @@ payload:
   - IP-CIDR,8.219.115.0/16
   - DOMAIN-SUFFIX,cncbinternational.com
   - DOMAIN-KEYWORD,linux.do 
+  - DOMAIN-KEYWORD,woot.com
