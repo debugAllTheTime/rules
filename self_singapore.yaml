@@ -1,1 +1,4 @@
 payload:
+  - IP-CIDR,8.219.115.0/24
+  - DOMAIN-KEYWORD,gpt.698818.xyz
+  - DOMAIN,gpt.698818.xyz
