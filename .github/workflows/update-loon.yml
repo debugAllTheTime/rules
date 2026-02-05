@@ -60,7 +60,7 @@ for yaml_file in root.glob("*.yaml"):
         if line and line not in seen:
             transformed.append(line)
             seen.add(line)
-    output.write_text("\n".join(transformed) + ("\n" if transformed else ""))
+    output.write_text("\n".join(transformed))
 PY
 
       - name: Commit changes
