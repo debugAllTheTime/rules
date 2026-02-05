@@ -45,8 +45,7 @@ def transform_line(raw: str):
         parts = parts[:2]
 
     if parts[0].upper() == "IP-CIDR" and len(parts) == 2:
-        if not parts[1].endswith("/32"):
-            parts.append("no-resolve")
+        parts.append("no-resolve")
 
     return ",".join(parts)
 
@@ -55,10 +54,12 @@ root = pathlib.Path(".")
 for yaml_file in root.glob("*.yaml"):
     output = pathlib.Path("loon") / f"{yaml_file.stem}.list"
     transformed = []
+    seen = set()
     for raw_line in yaml_file.read_text().splitlines():
         line = transform_line(raw_line)
-        if line:
+        if line and line not in seen:
             transformed.append(line)
+            seen.add(line)
     output.write_text("\n".join(transformed) + ("\n" if transformed else ""))
 PY
 

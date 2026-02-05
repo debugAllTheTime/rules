@@ -11,7 +11,7 @@ IP-CIDR,192.168.0.0/16,no-resolve
 IP-CIDR,10.253.0.0/16,no-resolve
 DOMAIN-KEYWORD,hubp.8bq.ovh
 DOMAIN-KEYWORD,cnki.net
-IP-CIDR,47.79.35.25/32
+IP-CIDR,47.79.35.25/32,no-resolve
 DOMAIN-KEYWORD,asusrouter.com
 DOMAIN-KEYWORD,uicdqg.xyz
 DOMAIN-SUFFIX,qlogo.cn
