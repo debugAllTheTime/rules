@@ -1,0 +1,70 @@
+name: Update loon lists
+
+on:
+  push:
+    paths:
+      - "*.yaml"
+      - ".github/workflows/update-loon.yml"
+  pull_request:
+    paths:
+      - "*.yaml"
+      - ".github/workflows/update-loon.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate loon rule files
+        run: |
+          mkdir -p loon
+          python - <<'PY'
+import pathlib
+
+def transform_line(raw: str):
+    line = raw.strip()
+    if not line or line == "payload:":
+        return None
+    if line.startswith("-"):
+        line = line[1:].strip()
+
+    parts = [p.strip() for p in line.split(",") if p.strip()]
+    if not parts:
+        return None
+
+    if parts[0].upper() == "IP-CIDRR":
+        parts[0] = "IP-CIDR"
+
+    if len(parts) >= 3:
+        parts = parts[:2]
+
+    if parts[0].upper() == "IP-CIDR" and len(parts) == 2:
+        parts.append("no-resolve")
+
+    return ",".join(parts)
+
+
+root = pathlib.Path(".")
+for yaml_file in root.glob("*.yaml"):
+    output = pathlib.Path("loon") / f"{yaml_file.stem}.list"
+    transformed = []
+    seen = set()
+    for raw_line in yaml_file.read_text().splitlines():
+        line = transform_line(raw_line)
+        if line and line not in seen:
+            transformed.append(line)
+            seen.add(line)
+    output.write_text("\n".join(transformed) + ("\n" if transformed else ""))
+PY
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update loon rule files"
+          file_pattern: loon/*.list
