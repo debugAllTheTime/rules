@@ -10,3 +10,4 @@ DOMAIN-KEYWORD,sciencedirect.com
 DOMAIN-KEYWORD,seagm
 DOMAIN-KEYWORD,hubspotlinks.com
 DOMAIN-KEYWORD,ge.698818.xyz
+IP-CIDR,24.144.89.0/16,no-resolve
