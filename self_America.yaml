@@ -12,3 +12,4 @@ payload:
   - DOMAIN-KEYWORD,hubspotlinks.com
   - DOMAIN-KEYWORD,ge.698818.xyz
   - IP-CIDRR,24.144.89.0/16
+  - DOMAIN-KEYWORD,linux.do 
