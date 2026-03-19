@@ -16,8 +16,8 @@ payload:
   - IP-CIDR,47.79.35.25/32
   - DOMAIN-KEYWORD,asusrouter.com
   - DOMAIN-KEYWORD,uicdqg.xyz
-  - DOMAIN-SUFFIX,qlogo.cn,DIRECT
-  - DOMAIN-SUFFIX,qpic.cn,DIRECT
+  - DOMAIN-SUFFIX,qlogo.cn
+  - DOMAIN-SUFFIX,qpic.cn
   - DOMAIN-SUFFIX,qq.com
   - DOMAIN-SUFFIX,wechat.com
   - DOMAIN-SUFFIX,servicewechat.com
