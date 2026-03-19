@@ -2,7 +2,7 @@ payload:
   - DOMAIN-KEYWORD,polymarket
   - DOMAIN-KEYWORD,coze.com
   - DOMAIN-KEYWORD,openwebui.com
-  - DOMAIN-KEYWORD,mybib.com 
+  - DOMAIN-KEYWORD,mybib.com
   - DOMAIN-KEYWORD,sora.com
   - DOMAIN-KEYWORD,api.4chat.me
   - DOMAIN-KEYWORD,ipinfo.io
@@ -11,5 +11,5 @@ payload:
   - DOMAIN-KEYWORD,seagm
   - DOMAIN-KEYWORD,hubspotlinks.com
   - DOMAIN-KEYWORD,ge.698818.xyz
-  - IP-CIDRR,24.144.89.0/16
-  - DOMAIN-KEYWORD,linux.do 
+  - IP-CIDR,24.144.89.0/16
+  - DOMAIN-KEYWORD,linux.do
