@@ -13,3 +13,7 @@ payload:
   - DOMAIN-KEYWORD,ge.698818.xyz
   - IP-CIDR,24.144.89.0/16
   - DOMAIN-KEYWORD,editorialmanager.com
+  - DOMAIN-KEYWORD,cursor-cdn.com,
+  - DOMAIN-KEYWORD,cursor.com,
+  - DOMAIN-KEYWORD,cursor.sh,
+  - DOMAIN-KEYWORD,cursorapi.com
