@@ -34,3 +34,9 @@ payload:
   - DOMAIN-SUFFIX,hf-mirror.com
   - DOMAIN-SUFFIX,uestc.cn
   - DOMAIN-SUFFIX,hf.co
+  - DOMAIN,finance.yahoo.com
+  - DOMAIN-SUFFIX,finance.yahoo.com
+  - DOMAIN-SUFFIX,yahoofinance.com
+  - DOMAIN-SUFFIX,yahooapis.com
+  - DOMAIN-SUFFIX,yimg.com
+  - DOMAIN,login.yahoo.com
