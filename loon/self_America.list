@@ -16,3 +16,9 @@ DOMAIN-KEYWORD,cursor-cdn.com
 DOMAIN-KEYWORD,cursor.com
 DOMAIN-KEYWORD,cursor.sh
 DOMAIN-KEYWORD,cursorapi.com
+DOMAIN,finance.yahoo.com
+DOMAIN-SUFFIX,finance.yahoo.com
+DOMAIN-SUFFIX,yahoofinance.com
+DOMAIN-SUFFIX,yahooapis.com
+DOMAIN-SUFFIX,yimg.com
+DOMAIN,login.yahoo.com
