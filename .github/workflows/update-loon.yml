@@ -34,6 +34,9 @@ jobs:
               if line.startswith("-"):
                   line = line[1:].strip()
 
+              if line.startswith("#"):
+                  return line
+                  
               parts = [p.strip() for p in line.split(",") if p.strip()]
               if not parts:
                   return None
