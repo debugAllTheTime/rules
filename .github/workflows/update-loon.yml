@@ -2,17 +2,25 @@ name: Update loon lists
 
 on:
   push:
+    branches: [main]
     paths:
       - "*.yaml"
+      - "*.yml"
       - ".github/workflows/update-loon.yml"
   pull_request:
     paths:
       - "*.yaml"
+      - "*.yml"
       - ".github/workflows/update-loon.yml"
   workflow_dispatch:
 
 permissions:
   contents: write
+
+# 短时间内连续 push 时，取消旧的运行，只跑最新一次
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -21,53 +29,130 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: pip install --quiet pyyaml
+
       - name: Generate loon rule files
         run: |
-          mkdir -p loon
           python - <<'PY'
           import pathlib
+          import sys
 
-          def transform_line(raw: str):
+          import yaml
+
+          # Clash(mihomo) classical 规则里合法的类型；不在这里面的视为拼写错误，直接报错
+          CLASH_TYPES = {
+              "DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-KEYWORD", "DOMAIN-REGEX",
+              "IP-CIDR", "IP-CIDR6", "IP-SUFFIX", "IP-ASN", "GEOIP", "GEOSITE",
+              "PROCESS-NAME", "PROCESS-PATH", "DST-PORT", "SRC-PORT", "SRC-IP-CIDR",
+              "URL-REGEX", "USER-AGENT",
+          }
+          # Loon 远程规则集支持的类型；Clash 专用类型(如 PROCESS-NAME)会被自动跳过
+          LOON_TYPES = {"DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-KEYWORD",
+                        "IP-CIDR", "IP-CIDR6", "IP-ASN", "GEOIP"}
+          IP_TYPES = {"IP-CIDR", "IP-CIDR6", "IP-ASN", "GEOIP"}
+
+          errors = []
+
+          def err(fname, lineno, msg):
+              loc = fname + (f":{lineno}" if lineno else "")
+              errors.append(f"{loc}: {msg}")
+              where = f"file={fname},line={lineno}" if lineno else f"file={fname}"
+              print(f"::error {where}::{msg}")
+
+          def validate_structure(path):
+              """严格校验：必须是 Clash rule-provider 的 payload 列表格式。
+              校验失败 = 这个文件在 Clash 那边(format: yaml)同样加载不了，
+              所以直接让 Action 失败，避免坏文件静默上线。"""
+              try:
+                  data = yaml.safe_load(path.read_text(encoding="utf-8"))
+              except yaml.YAMLError as e:
+                  first = str(e).replace("\n", " ")[:120]
+                  err(path.name, None, f"不是合法 YAML（{first}），Clash 的 format:yaml provider 无法加载")
+                  return False
+              if not isinstance(data, dict) or "payload" not in data:
+                  err(path.name, None, "缺少 payload: 字段，必须写成 payload: 列表格式")
+                  return False
+              if not isinstance(data["payload"], list) or any(
+                      not isinstance(x, str) for x in data["payload"]):
+                  err(path.name, None, "payload 必须是字符串列表")
+                  return False
+              return True
+
+          def transform_line(raw, fname, lineno):
+              """payload 行 -> loon 规则行；注释保留，策略字段丢弃，IP 规则补 no-resolve"""
               line = raw.strip()
               if not line or line == "payload:":
                   return None
               if line.startswith("-"):
                   line = line[1:].strip()
-
               if line.startswith("#"):
                   return line
-                  
               parts = [p.strip() for p in line.split(",") if p.strip()]
               if not parts:
                   return None
-
-              if parts[0].upper() == "IP-CIDRR":
-                  parts[0] = "IP-CIDR"
-
-              if len(parts) >= 3:
-                  parts = parts[:2]
-
-              if parts[0].upper() == "IP-CIDR" and len(parts) == 2:
-                  parts.append("no-resolve")
-
-              return ",".join(parts)
-
+              rtype = parts[0].upper()
+              if rtype not in CLASH_TYPES:
+                  hint = "（应为 IP-CIDR）" if rtype == "IP-CIDRR" else ""
+                  err(fname, lineno, f"未知规则类型 {parts[0]!r}{hint}")
+                  return None
+              if len(parts) < 2:
+                  err(fname, lineno, f"规则缺少匹配值: {line}")
+                  return None
+              if rtype not in LOON_TYPES:
+                  return None  # Clash 专用类型，Loon 列表里跳过
+              out = parts[:2]  # 丢弃第 3 个及以后的字段（策略、旧 no-resolve 等）
+              if rtype in IP_TYPES:
+                  out.append("no-resolve")
+              return ",".join(out)
 
           root = pathlib.Path(".")
-          for yaml_file in root.glob("*.yaml"):
-              output = pathlib.Path("loon") / f"{yaml_file.stem}.list"
-              transformed = []
+          loon_dir = pathlib.Path("loon")
+          loon_dir.mkdir(exist_ok=True)
+
+          sources = sorted(root.glob("*.yaml")) + sorted(root.glob("*.yml"))
+
+          for src in sources:
+              if not validate_structure(src):
+                  continue  # 不生成、保留旧 .list，最后统一让 Action 失败
+              out_lines = [f"# Auto-generated from {src.name} - edit the YAML, not this file."]
               seen = set()
-              for raw_line in yaml_file.read_text().splitlines():
-                  line = transform_line(raw_line)
-                  if line and line not in seen:
-                      transformed.append(line)
-                      seen.add(line)
-              output.write_text("\n".join(transformed) + ("\n" if transformed else ""))
+              for lineno, raw in enumerate(src.read_text(encoding="utf-8").splitlines(), 1):
+                  t = transform_line(raw, src.name, lineno)
+                  if t is None:
+                      continue
+                  if t.startswith("#"):
+                      out_lines.append(t)        # 注释不去重
+                  elif t not in seen:
+                      out_lines.append(t)
+                      seen.add(t)
+              (loon_dir / f"{src.stem}.list").write_text(
+                  "\n".join(out_lines) + "\n", encoding="utf-8")
+              print(f"generated loon/{src.stem}.list ({len(seen)} rules)")
+
+          # 根目录 yaml 被删除/改名后，自动清理对应的旧 .list
+          expected = {p.stem for p in sources}
+          for stale in loon_dir.glob("*.list"):
+              if stale.stem not in expected:
+                  stale.unlink()
+                  print(f"removed stale loon/{stale.name}")
+
+          if errors:
+              print(f"\n共 {len(errors)} 个错误，已中止（本次不会提交任何 loon 更新）：")
+              for e in errors:
+                  print("  - " + e)
+              sys.exit(1)
           PY
 
+      # PR 只做校验和生成，不提交（原来的写法在 PR 事件下会因 detached HEAD 报错）
       - name: Commit changes
+        if: github.event_name != 'pull_request'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update loon rule files"
-          file_pattern: loon/*.list
+          file_pattern: "loon/"
