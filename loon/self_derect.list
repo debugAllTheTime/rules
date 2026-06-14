@@ -9,6 +9,7 @@ IP-CIDR,17.0.0.0/8,no-resolve
 IP-CIDR,100.64.0.0/10,no-resolve
 IP-CIDR,172.16.0.0/12,no-resolve
 IP-CIDR,192.168.0.0/16,no-resolve
+IP-CIDR,10.20.26.0/24,no-resolve
 IP-CIDR,10.253.0.0/16,no-resolve
 DOMAIN-KEYWORD,aliyuncs.com
 DOMAIN-KEYWORD,hubp.8bq.ovh
