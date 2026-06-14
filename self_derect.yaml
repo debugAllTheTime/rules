@@ -35,3 +35,6 @@ payload:
   - DOMAIN-SUFFIX,hf-mirror.com
   - DOMAIN-SUFFIX,uestc.cn
   - DOMAIN-SUFFIX,hf.co
+  - PROCESS-NAME-WILDCARD,*WeChat*
+  - PROCESS-NAME-WILDCARD,*wechat*
+  - PROCESS-NAME,com.tencent.mm
