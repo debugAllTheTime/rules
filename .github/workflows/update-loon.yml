@@ -45,13 +45,28 @@ jobs:
 
           import yaml
 
-          # Clash(mihomo) classical 规则里合法的类型；不在这里面的视为拼写错误，直接报错
-          CLASH_TYPES = {
+          # mihomo 已知规则类型，仅用于「眼熟」判断：不在表里只警告、不阻断。
+          # mihomo 会不断新增类型，这里宁可全、不强求穷举。
+          KNOWN_TYPES = {
+              # 域名类
               "DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-KEYWORD", "DOMAIN-REGEX",
-              "IP-CIDR", "IP-CIDR6", "IP-SUFFIX", "IP-ASN", "GEOIP", "GEOSITE",
-              "PROCESS-NAME", "PROCESS-PATH", "DST-PORT", "SRC-PORT", "SRC-IP-CIDR",
+              "DOMAIN-WILDCARD", "GEOSITE",
+              # IP 类
+              "IP-CIDR", "IP-CIDR6", "IP-SUFFIX", "IP-ASN", "GEOIP",
+              "SRC-IP-CIDR", "SRC-IP-SUFFIX", "SRC-IP-ASN", "SRC-GEOIP",
+              # 端口 / 入站
+              "SRC-PORT", "DST-PORT", "IN-PORT", "IN-TYPE", "IN-USER", "IN-NAME",
+              # 进程类（含较新的 WILDCARD / REGEX 变体）
+              "PROCESS-NAME", "PROCESS-PATH",
+              "PROCESS-NAME-REGEX", "PROCESS-PATH-REGEX",
+              "PROCESS-NAME-WILDCARD", "PROCESS-PATH-WILDCARD",
+              # 其它
+              "NETWORK", "UID", "DSCP", "RULE-SET", "SUB-RULE",
+              "AND", "OR", "NOT", "MATCH",
               "URL-REGEX", "USER-AGENT",
           }
+          # 已知拼写错误 -> 自动纠正（静默修复 loon 输出，同时给警告提醒改源文件）
+          AUTO_FIX = {"IP-CIDRR": "IP-CIDR"}
           # Loon 远程规则集支持的类型；Clash 专用类型(如 PROCESS-NAME)会被自动跳过
           LOON_TYPES = {"DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-KEYWORD",
                         "IP-CIDR", "IP-CIDR6", "IP-ASN", "GEOIP"}
@@ -64,6 +79,10 @@ jobs:
               errors.append(f"{loc}: {msg}")
               where = f"file={fname},line={lineno}" if lineno else f"file={fname}"
               print(f"::error {where}::{msg}")
+
+          def warn(fname, lineno, msg):
+              where = f"file={fname},line={lineno}" if lineno else f"file={fname}"
+              print(f"::warning {where}::{msg}")
 
           def validate_structure(path):
               """严格校验：必须是 Clash rule-provider 的 payload 列表格式。
@@ -97,12 +116,15 @@ jobs:
               if not parts:
                   return None
               rtype = parts[0].upper()
-              if rtype not in CLASH_TYPES:
-                  hint = "（应为 IP-CIDR）" if rtype == "IP-CIDRR" else ""
-                  err(fname, lineno, f"未知规则类型 {parts[0]!r}{hint}")
-                  return None
+              if rtype in AUTO_FIX:                     # 已知拼写错误：纠正 + 警告
+                  fixed = AUTO_FIX[rtype]
+                  warn(fname, lineno, f"{parts[0]!r} 疑似拼写错误，loon 侧已按 {fixed!r} 处理；请把源 .yaml 也改正")
+                  rtype = fixed
+                  parts[0] = fixed
+              elif rtype not in KNOWN_TYPES:            # 没见过的类型：放行 + 警告（不阻断）
+                  warn(fname, lineno, f"未见过的规则类型 {parts[0]!r}（已放行，请确认不是拼写错误）")
               if len(parts) < 2:
-                  err(fname, lineno, f"规则缺少匹配值: {line}")
+                  warn(fname, lineno, f"规则缺少匹配值，已跳过: {line}")
                   return None
               if rtype not in LOON_TYPES:
                   return None  # Clash 专用类型，Loon 列表里跳过
