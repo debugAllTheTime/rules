@@ -23,3 +23,4 @@ payload:
   - DOMAIN-SUFFIX,yahooapis.com
   - DOMAIN-SUFFIX,yimg.com
   - DOMAIN,login.yahoo.com
+  - PROCESS-NAME-REGEX,(?i)^RoxyChrome
