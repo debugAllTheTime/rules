@@ -1,26 +1,36 @@
 payload:
+  # —— 进程 ——
+  - PROCESS-NAME-REGEX,(?i)^RoxyChrome
+
+  # —— 关键字（需跨 TLD / 子域名不固定）——
   - DOMAIN-KEYWORD,polymarket
-  - DOMAIN-KEYWORD,coze.com
-  - DOMAIN-KEYWORD,openwebui.com
-  - DOMAIN-KEYWORD,mybib.com
-  - DOMAIN-KEYWORD,sora.com
-  - DOMAIN-KEYWORD,api.4chat.me
-  - DOMAIN-KEYWORD,ipinfo.io
-  - DOMAIN-KEYWORD,nvidia.com
-  - DOMAIN-KEYWORD,sciencedirect.com
   - DOMAIN-KEYWORD,seagm
-  - DOMAIN-KEYWORD,hubspotlinks.com
-  - DOMAIN-KEYWORD,ge.698818.xyz
-  - IP-CIDR,24.144.89.0/16
-  - DOMAIN-KEYWORD,editorialmanager.com
-  - DOMAIN-KEYWORD,cursor-cdn.com,
-  - DOMAIN-KEYWORD,cursor.com,
-  - DOMAIN-KEYWORD,cursor.sh,
-  - DOMAIN-KEYWORD,cursorapi.com
-  - DOMAIN,finance.yahoo.com
+
+  # —— 域名 ——
+  - DOMAIN-SUFFIX,coze.com
+  - DOMAIN-SUFFIX,openwebui.com
+  - DOMAIN-SUFFIX,mybib.com
+  - DOMAIN-SUFFIX,sora.com
+  - DOMAIN-SUFFIX,4chat.me
+  - DOMAIN-SUFFIX,ipinfo.io
+  - DOMAIN-SUFFIX,nvidia.com
+  - DOMAIN-SUFFIX,sciencedirect.com
+  - DOMAIN-SUFFIX,hubspotlinks.com
+  - DOMAIN-SUFFIX,editorialmanager.com
+  - DOMAIN-SUFFIX,ge.698818.xyz
+
+  # —— Cursor ——
+  - DOMAIN-SUFFIX,cursor.com
+  - DOMAIN-SUFFIX,cursor.sh
+  - DOMAIN-SUFFIX,cursor-cdn.com
+  - DOMAIN-SUFFIX,cursorapi.com
+
+  # —— Yahoo Finance ——
   - DOMAIN-SUFFIX,finance.yahoo.com
   - DOMAIN-SUFFIX,yahoofinance.com
   - DOMAIN-SUFFIX,yahooapis.com
   - DOMAIN-SUFFIX,yimg.com
   - DOMAIN,login.yahoo.com
-  - PROCESS-NAME-REGEX,(?i)^RoxyChrome
+
+  # —— IP ——
+  - IP-CIDR,24.144.89.0/24,no-resolve
