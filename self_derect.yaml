@@ -40,3 +40,4 @@ payload:
   - PROCESS-NAME-WILDCARD,*wechat*
   - PROCESS-NAME,com.tencent.mm
   - DOMAIN-SUFFIX,openxlab.org
+  - DOMAIN-SUFFIX,uzh.ch
