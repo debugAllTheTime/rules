@@ -41,3 +41,5 @@ payload:
   - PROCESS-NAME,com.tencent.mm
   - DOMAIN-SUFFIX,openxlab.org
   - DOMAIN-SUFFIX,uzh.ch
+  - DOMAIN,overleaf.698818.xyz
+  - DOMAIN,overleaf1.698818.xyz
