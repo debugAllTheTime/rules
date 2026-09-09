@@ -33,3 +33,4 @@ payload:
 
   # —— IP ——
   - IP-CIDR,24.144.89.0/24,no-resolve
+  - IP-CIDR,64.83.31.245/32,no-resolve
