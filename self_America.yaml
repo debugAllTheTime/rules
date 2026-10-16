@@ -2,6 +2,7 @@ payload:
   # —— 进程 ——
   - PROCESS-NAME-REGEX,(?i)^RoxyChrome
   - PROCESS-NAME-REGEX,(?i).*RoxyFirefox.*
+  - PROCESS-NAME-REGEX,(?i).*Roxy.*
 
   # —— 关键字（需跨 TLD / 子域名不固定）——
   - DOMAIN-KEYWORD,polymarket
