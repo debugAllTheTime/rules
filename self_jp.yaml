@@ -1,2 +1,3 @@
 payload:
   - DOMAIN-KEYWORD,dayone
+  - DOMAIN-SUFFIX,aws.amazon.com
