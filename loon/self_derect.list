@@ -4,14 +4,7 @@ DOMAIN-SUFFIX,sciencedirect.com
 DOMAIN-SUFFIX,msftconnecttest.com
 DOMAIN-KEYWORD,colink.in
 DOMAIN-KEYWORD,tju.pt
-IP-CIDR,127.0.0.0/8,no-resolve
-IP-CIDR,10.0.0.0/8,no-resolve
 IP-CIDR,17.0.0.0/8,no-resolve
-IP-CIDR,100.64.0.0/10,no-resolve
-IP-CIDR,172.16.0.0/12,no-resolve
-IP-CIDR,192.168.0.0/16,no-resolve
-IP-CIDR,10.20.26.0/24,no-resolve
-IP-CIDR,10.253.0.0/16,no-resolve
 DOMAIN-KEYWORD,aliyuncs.com
 DOMAIN-KEYWORD,hubp.8bq.ovh
 DOMAIN-KEYWORD,cnki.net
@@ -34,7 +27,6 @@ DOMAIN-KEYWORD,mirrorify.net
 DOMAIN,time.windows.com
 DOMAIN-SUFFIX,feishu.cn
 DOMAIN-SUFFIX,uestc.cn
-DOMAIN-SUFFIX,hf.co
 DOMAIN-SUFFIX,openxlab.org
 DOMAIN-SUFFIX,uzh.ch
 DOMAIN,overleaf.698818.xyz
