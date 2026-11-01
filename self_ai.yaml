@@ -1,12 +1,10 @@
 payload:
   - DOMAIN-KEYWORD,perplexity.ai
-  - DOMAIN-KEYWORD,cursor.com
-  - DOMAIN-KEYWORD,cursor.sh
-  - DOMAIN-KEYWORD,cursorapi.com
   # ✅ 以下三条从宽泛的 DOMAIN-KEYWORD 改为精确规则
   # 原来的 DOMAIN-KEYWORD,googleapis.com 会匹配所有 Google 服务（YouTube API、Drive、Gmail 等）
   # Gemini.yaml 已覆盖 generativelanguage / proactivebackend-pa / apis.google.com 等 AI 子域
   # 如需补充 AI 相关的 googleapis 子域，在此精确添加即可：
   - DOMAIN-SUFFIX,notebooklm.google
   - DOMAIN-SUFFIX,notebooklm.google.com
-  - DOMAIN-KEYWORD,aistudio
+  # aistudio 原为 DOMAIN-KEYWORD，会误中百度飞桨 aistudio.baidu.com
+  - DOMAIN-SUFFIX,aistudio.google.com
