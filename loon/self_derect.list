@@ -35,3 +35,8 @@ DOMAIN,overleaf1.698818.xyz
 DOMAIN-SUFFIX,1688.com
 DOMAIN-SUFFIX,alicdn.com
 DOMAIN-SUFFIX,alibaba.com
+# EasyTier 组网 + 自有域名 / 服务器直连（rule-provider 里不写策略，策略由 self_DIRECT / 自定直连 组决定）
+# 注：ge.698818.xyz（self_America）、gpt.698818.xyz（self_singapore）排在本规则集之前，仍走各自节点
+DOMAIN-SUFFIX,698818.xyz
+IP-CIDR,154.21.199.11/32,no-resolve
+IP-CIDR,64.186.249.89/32,no-resolve
