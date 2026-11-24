@@ -20,6 +20,7 @@ payload:
   - DOMAIN-SUFFIX,editorialmanager.com
   - DOMAIN-SUFFIX,ge.698818.xyz
   - DOMAIN-SUFFIX,novixlink.com
+  - DOMAIN-SUFFIX,linux.do
 
   # —— Cursor ——
   - DOMAIN-SUFFIX,cursor.com
